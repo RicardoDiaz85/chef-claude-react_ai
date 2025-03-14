@@ -1,0 +1,42 @@
+#root {
+  width: 100vw;
+  height: 100vh;
+  overflow-x: hidden;
+  overflow-y: hidden;
+  margin: 0;
+  padding: 0;
+  text-align: center;
+  background-color: #FAFAF8;
+}
+
+
+/*-----------    HEADER COMPONENT  -----------*/
+header {
+  display: flex;
+  height: 6.9375rem;
+  width:100%;
+  gap: .69rem;
+  align-items: center;
+  justify-content: center;
+  background: #FFF;
+  box-shadow: 0px 1px 3px 0px rgba(0, 0, 0, 0.10), 0px 1px 2px 0px rgba(0, 0, 0, 0.06);
+}
+
+.chefIcon {
+  height: 3.25rem;
+  width: auto;
+  flex-shrink: 0;
+}
+
+h1 {
+  color: #141413;
+  font-family: Inter;
+  font-size: 2rem;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 3.75rem;
+  letter-spacing: -0.1rem;
+}
+
+
+/*-----------    MAIN COMPONENT  -----------*/
