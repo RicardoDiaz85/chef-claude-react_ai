@@ -5,8 +5,8 @@ function Main() {
             {/* Ingredient Input Section */}
             <section className="ingredient-input">
                 <form>
-                    <input type="text" placeholder="e.g. oregano" aria-label="Ingredient search" />
-                    <button type="submit">+ Add ingredient</button>
+                    <input type="text" className="ingredient" placeholder="e.g. oregano, clove," aria-label="Ingredient search" />
+                    <button type="submit" className="button">+ Add ingredient</button>
                 </form>
             </section>
 
@@ -26,9 +26,11 @@ function Main() {
 
             {/* Recipe Suggestion Section */}
             <aside className="recipe-suggestion">
-                <p>Ready for a recipe?</p>
-                <p>Generate a recipe from your list of ingredients.</p>
-                <button type="button">Get a recipe</button>
+                <div className="ready-for">
+                    <h3>Ready for a recipe?</h3>
+                    <p>Generate a recipe from your list of ingredients.</p>
+                </div>
+                <button className="suggestion-button" type="button">Get a recipe</button>
             </aside>
 
         </main>
