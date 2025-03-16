@@ -2,7 +2,6 @@
 
 :root {
   font-family: Inter, sans-serif, Avenir, Helvetica, Arial, sans-serif;
-
   font-weight: 400;
   font-synthesis: none;
   text-rendering: optimizeLegibility;
@@ -16,7 +15,6 @@ body {
   width: 100vw;
   height: 100vh;
   overflow-x: hidden;
-  background-color: #FAFAF8;
 }
 
 button {
