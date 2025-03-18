@@ -1,48 +1,52 @@
-import { useState } from "react";
+import React, { useState } from "react";
 
 function Main() {
-    const [ingredients, setIngredients] = useState([]);
-    const [newIngredient, setNewIngredient] = useState("");
-
+    
+    const [ingredients, setIngredients] = useState([])
+    
     function handleSubmit(event) {
         event.preventDefault(); // Prevents page refresh
-
+        // newIngredient.trim() !== "" -> ensures not empty string and removes leading and trailing spaces
+        // !ingredients.includes(newIngredient) --> newIngredient is not already in the ingredients list
+        const formData = new FormData(event.currentTarget)
+        const newIngredient = formData.get('ingredient')
         if (newIngredient.trim() !== "" && !ingredients.includes(newIngredient)) {
             setIngredients([...ingredients, newIngredient]); // Add new ingredient to the list
-            setNewIngredient(""); // Clear input field
+            event.currentTarget.reset()
         }
     }
+
+    const ingredientsListedItems = ingredients.map(ingredient => (<li key={ingredient}>{ingredient}</li>))
 
     return (
         <main className="container">
             {/* Ingredient Input Section */}
             <section className="ingredient-input">
+
                 <form onSubmit={handleSubmit}>
+
                     <input 
                         type="text" 
                         name="ingredient" 
                         autoComplete="off" 
                         className="ingredient" 
                         placeholder="e.g. oregano" 
-                        aria-label="Add ingredient" 
-                        value={newIngredient} 
-                        onChange={(e) => setNewIngredient(e.target.value)}
+                        aria-label="Add ingredient"
                     />
-                    <button type="submit" className="button">Add ingredient</button>
+
+                    <button type="submit" className="button">
+                        Add ingredient
+                    </button>
+
                 </form>
+                
             </section>
 
             {/* Ingredients List */}
             <section className="ingredients-list">
                 <h2>Ingredients on hand:</h2>
                 <ul>
-                    {ingredients.length === 0 ? (
-                        <p>Add your first ingredient</p>
-                    ) : (
-                        ingredients.map((ingredient, index) => (
-                            <li key={`${ingredient}-${index}`}>{ingredient}</li>
-                        ))
-                    )}
+                {ingredientsListedItems}
                 </ul>
             </section>
 
