@@ -4,15 +4,12 @@ function Main() {
     
     const [ingredients, setIngredients] = useState([])
     
-    function handleSubmit(event) {
-        event.preventDefault(); // Prevents page refresh
-        // newIngredient.trim() !== "" -> ensures not empty string and removes leading and trailing spaces
-        // !ingredients.includes(newIngredient) --> newIngredient is not already in the ingredients list
-        const formData = new FormData(event.currentTarget)
-        const newIngredient = formData.get('ingredient')
+    function addIngredient(formData) {
+        const newIngredient = formData.get("ingredient")
+        console.log(newIngredient)
+        
         if (newIngredient.trim() !== "" && !ingredients.includes(newIngredient)) {
             setIngredients([...ingredients, newIngredient]); // Add new ingredient to the list
-            event.currentTarget.reset()
         }
     }
 
@@ -23,7 +20,7 @@ function Main() {
             {/* Ingredient Input Section */}
             <section className="ingredient-input">
 
-                <form onSubmit={handleSubmit}>
+                <form action={addIngredient}>
 
                     <input 
                         type="text" 
