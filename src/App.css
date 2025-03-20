@@ -6,7 +6,7 @@
   margin: 0;
   padding: 0;
   text-align: center;
-  background-color: #FAFAF8;
+  background-color: #e4e4e4;
 }
 
 /*-----------    HEADER COMPONENT  -----------*/
@@ -50,11 +50,12 @@ h1 {
 .container {
   max-width: 30rem; /* Keeps content readable and prevents stretching */
   margin: 3rem auto;
-  padding: 3rem 2rem 3rem;
-  background-color: #FAFAF8;
+  padding: 3rem;
+  background-color: rgba(255, 255, 255, 0.886);
   color: #2c2c2c;
   border-radius: .5rem;
   outline: 1px solid #a1a19e8b;
+  box-shadow: 0px 2px 3px 0px rgba(0, 0, 0, 0.10), 0px 2px 2px 0px rgba(0, 0, 0, 0.06);
 }
 
 
@@ -63,7 +64,7 @@ h1 {
 form {
   display: flex;
   gap: 0.75rem; /* Keeps input and button aligned */
-  margin-bottom: 3rem; /* Provides spacing from the list */
+  margin-bottom: .5rem; /* Provides spacing from the list */
   width: 100%;
 }
 
@@ -123,14 +124,14 @@ form > button::before {
 
 /* === INGREDIENTS LIST === */
 .ingredients-list {
-  margin-bottom: 3rem;
+  margin-bottom: 2rem;
   
 }
 
 .ingredients-list h2 {
   /* === Layout === */
   display: flex;
-  margin: 0;
+  margin-top: 3rem;
   padding: 0;
   /* === Style === */
   color: #141413;
