@@ -124,6 +124,9 @@ form > button::before {
   margin-top: 1rem;
 }
 
+.ingredient-input > p {
+  margin: auto 3rem;
+}
 
 
 /* === INGREDIENTS LIST === */
@@ -226,6 +229,9 @@ h2 {
 }
 
 .suggested-recipe-container {
+  color: #475467;
+  line-height: 1.75rem;
+  font-size: 1.125rem;
+  font-weight: 400;
   text-align: left;
-  margin-top: 2rem;
 }
