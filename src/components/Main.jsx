@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import IngredientsList from './IngredientsList';  // Component to display added ingredients
 import Recipe from './Recipe';                    // Component to display the AI-generated recipe
 import { generateRecipeFromOllama } from '../ai/ollama';  // Local AI function using Ollama
@@ -9,6 +9,14 @@ function Main() {
   const [ingredients, setIngredients] = useState([]); // Holds the list of ingredients
 
   const [recipe, setRecipe] = useState(false); // Holds the generated recipe (Markdown string)
+  const elementRef = useRef(null); // ✅ best practice
+  
+  useEffect(() => {
+    if (recipe !== "" && elementRef.current !== null) {
+      elementRef.current.scrollIntoView({behavior:"smooth"}); 
+    }
+  }, [recipe]);
+  
 
   const [loading, setLoading] = useState(false); // Controls button loading state (prevents spam)
 
@@ -71,8 +79,8 @@ function Main() {
 
       {/* ====== RECIPE SUGGESTION BUTTON ====== */}
       {ingredients.length >= 3 && (
-        <aside className="recipe-suggestion">
-          <div className="ready-for">
+        <aside  className="recipe-suggestion">
+          <div ref={elementRef} className="ready-for">
             <h3>Ready for a recipe?</h3>
             <p>Generate a recipe from your list of ingredients.</p>
           </div>
