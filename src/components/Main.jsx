@@ -1,7 +1,7 @@
 import React, { useState, useRef, useEffect } from "react";
-import IngredientsList from './IngredientsList';  // Component to display added ingredients
-import Recipe from './Recipe';                    // Component to display the AI-generated recipe
-import { generateRecipeFromOllama } from '../ai/ollama';  // Local AI function using Ollama
+import IngredientsList from "./IngredientsList"; // Component to display added ingredients
+import Recipe from "./Recipe"; // Component to display the AI-generated recipe
+import { generateRecipeFromOllama } from "../ai/ollama"; // Local AI function using Ollama
 
 function Main() {
   // === React State Variables ===
@@ -10,13 +10,12 @@ function Main() {
 
   const [recipe, setRecipe] = useState(false); // Holds the generated recipe (Markdown string)
   const elementRef = useRef(null); // ✅ best practice
-  
+
   useEffect(() => {
     if (recipe !== "" && elementRef.current !== null) {
-      elementRef.current.scrollIntoView({behavior:"smooth"}); 
+      elementRef.current.scrollIntoView({ behavior: "smooth" });
     }
   }, [recipe]);
-  
 
   const [loading, setLoading] = useState(false); // Controls button loading state (prevents spam)
 
@@ -46,24 +45,28 @@ function Main() {
 
   return (
     <main className="container">
-
       {/* ====== INGREDIENT INPUT FORM ====== */}
       <section className="ingredient-input">
         <h2>👋 Welcome to Chef Claude!</h2>
-        <p>Just add at least 3 ingredients, and Chef Claude will whip up a delicious recipe just for you.</p>
-        
+        <p>
+          Just add at least 3 ingredients, and Chef Claude will whip up a
+          delicious recipe just for you.
+        </p>
+
         {/* Form to input ingredients */}
-        <form onSubmit={(e) => {
-          e.preventDefault(); // Prevent page refresh
-          addIngredient(new FormData(e.target)); // Pass form data
-          e.target.reset(); // Clear input field
-        }}>
-          <input 
-            type="text" 
-            name="ingredient" 
-            autoComplete="off" 
-            className="ingredient" 
-            placeholder="e.g. oregano" 
+        <form
+          onSubmit={(e) => {
+            e.preventDefault(); // Prevent page refresh
+            addIngredient(new FormData(e.target)); // Pass form data
+            e.target.reset(); // Clear input field
+          }}
+        >
+          <input
+            type="text"
+            name="ingredient"
+            autoComplete="off"
+            className="ingredient"
+            placeholder="e.g. oregano"
             aria-label="Add ingredient"
           />
           <button type="submit" className="button">
@@ -73,21 +76,19 @@ function Main() {
       </section>
 
       {/* ====== INGREDIENTS LIST ====== */}
-      {ingredients.length > 0 && (
-        <IngredientsList ingredients={ingredients} />
-      )}
+      {ingredients.length > 0 && <IngredientsList ingredients={ingredients} />}
 
       {/* ====== RECIPE SUGGESTION BUTTON ====== */}
       {ingredients.length >= 3 && (
-        <aside  className="recipe-suggestion">
+        <aside className="recipe-suggestion">
           <div ref={elementRef} className="ready-for">
             <h3>Ready for a recipe?</h3>
             <p>Generate a recipe from your list of ingredients.</p>
           </div>
 
-          <button 
-            onClick={getRecipe} 
-            className="suggestion-button" 
+          <button
+            onClick={getRecipe}
+            className="suggestion-button"
             type="button"
             disabled={loading} // Prevent multiple clicks
           >
@@ -100,7 +101,6 @@ function Main() {
       {recipe && (
         <Recipe recipe={recipe} /> //recipe is the markdown string, and getRecipe is a function — but your <Recipe /> component is expecting a recipe prop, not a function.
       )}
-
     </main>
   );
 }
