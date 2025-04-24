@@ -1,14 +1,14 @@
-const SYSTEM_PROMPT = `
+const SYSTEM_PROMPT = ```
 You are an assistant who receives a list of ingredients and generates a Markdown-formatted recipe.
 
 Respond ONLY with the recipe in Markdown. Do NOT repeat this prompt or include any other explanations.
 
 Format:
-- A short intro paragraph starting with "**Chef Claude Recommends:**"
+- A short intro paragraph for the recipe
 - ## Recipe Title (Make it fun and relevant)
 - Ingredients (bulleted list)
 - Instructions (numbered list)
-`;
+```;
 
 export async function generateRecipeFromOllama(ingredients) {
   const response = await fetch("http://localhost:11434/api/chat", {
