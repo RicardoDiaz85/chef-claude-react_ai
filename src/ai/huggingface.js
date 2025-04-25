@@ -1,38 +1,58 @@
-import { HfInference } from '@huggingface/inference';
+const HF_API_KEY = import.meta.env.VITE_HF_API_KEY;
 
-const hf = new HfInference(import.meta.env.VITE_HUGGINGFACE_API_KEY);
+// ✅ Better model that actually follows instructions
+const HF_MODEL = "mistralai/Mixtral-8x7B-Instruct-v0.1";
 
-const SYSTEM_PROMPT = ```
-You are an assistant who receives a list of ingredients and generates a Markdown-formatted recipe.
+// ✅ Updated prompt designed to guide the model clearly
+const promptTemplate = (ingredients) => `
+You are an assistant that generates a Markdown-formatted recipe based on a list of ingredients.
 
-Respond ONLY with the recipe in Markdown. Do NOT repeat this prompt or include any other explanations.
+Your response MUST be in Markdown only. Do NOT repeat the prompt or include any explanation.
 
-Format:
-- A short intro paragraph for the recipe
-- ## Recipe Title (Make it fun and relevant)
-- Ingredients (bulleted list)
-- Instructions (numbered list)
-```;
+Use this format:
+- A short paragraph introduction to the dish
+- ## Recipe Title (fun and relevant)
+- **Ingredients** (bulleted list)
+- **Instructions** (numbered list)
 
-export async function generateRecipefromMistral(ingredients) {
-    const ingredientsString = ingredients.join(", ");
+Ingredients provided: ${ingredients}
+`;
 
-    try {
-        const response = await hf.chatCompletion({
-            model: "HuggingFaceH4/zephyr-7b-alpha",
-            messages: [
-                { role: "system", content: SYSTEM_PROMPT },
-                { role: "user", content: `I have ${ingredientsString}. Please give me a recipe you'd recommend I make!` },
-            ],
-            parameters: {
-                max_new_tokens: 500,
-                temperature: 0.7,
-            },
-        });
+export async function generateRecipeWithHF(userPrompt) {
+  if (!HF_API_KEY) {
+    throw new Error(
+      "Hugging Face API key not found. Please add it to your .env file."
+    );
+  }
 
-        return response.choices[0].message.content;
-    } catch (err) {
-        console.error("Hugging Face API Error:", err.message);
-        return "Sorry, something went wrong generating your recipe.";
+  const response = await fetch(
+    `https://api-inference.huggingface.co/models/${HF_MODEL}`,
+    {
+      method: "POST",
+      headers: {
+        Authorization: `Bearer ${HF_API_KEY}`,
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        inputs: promptTemplate(userPrompt),
+      }),
     }
+  );
+
+  if (!response.ok) {
+    throw new Error(`Hugging Face request failed: ${response.statusText}`);
+  }
+
+  const data = await response.json();
+  const rawText =
+    data?.[0]?.generated_text?.trim() || "⚠️ No recipe was generated.";
+
+  // Remove any version of the system prompt + echo of ingredients
+  const cleaned = rawText
+    .replace(/you are an assistant[\s\S]+?ingredients provided:.*?\n/i, "") // remove prompt + ingredients
+    .replace(/^#+\s*Chef Claude Recommends:?/i, "") // remove header if it appears
+    .replace(/^\s*Ingredients[:\s]+.*$/i, "") // remove echo line like "Ingredients: chicken, beef"
+    .trim();
+
+  return cleaned;
 }

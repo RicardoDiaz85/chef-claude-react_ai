@@ -2,11 +2,13 @@ import React, { useState, useRef, useEffect } from "react";
 import IngredientsList from "./IngredientsList"; // Component to display added ingredients
 import Recipe from "./Recipe"; // Component to display the AI-generated recipe
 import { generateRecipeFromOllama } from "../ai/ollama"; // Local AI function using Ollama
+import { generateRecipeWithHF } from "../ai/huggingface"; // Hugging Face API
 
 function Main() {
   // === React State Variables ===
 
   const [ingredients, setIngredients] = useState([]); // Holds the list of ingredients
+  const [model, setModel] = useState("ollama"); // Default is Ollama
 
   const [recipe, setRecipe] = useState(false); // Holds the generated recipe (Markdown string)
   const elementRef = useRef(null); // ✅ best practice
@@ -32,14 +34,21 @@ function Main() {
 
   // === Function to Call Local AI (Ollama) ===
   async function getRecipe() {
-    setLoading(true); // Show "Generating..." on button
+    setLoading(true);
     try {
-      const markdown = await generateRecipeFromOllama(ingredients); // Send ingredients to Ollama
-      setRecipe(markdown); // Save recipe to state
+      let markdown;
+
+      if (model === "ollama") {
+        markdown = await generateRecipeFromOllama(ingredients);
+      } else {
+        markdown = await generateRecipeWithHF(ingredients.join(", "));
+      }
+
+      setRecipe(markdown);
     } catch (err) {
       alert("Failed to generate recipe: " + err.message);
     } finally {
-      setLoading(false); // Re-enable button
+      setLoading(false);
     }
   }
 
@@ -48,6 +57,18 @@ function Main() {
       {/* ====== INGREDIENT INPUT FORM ====== */}
       <section className="ingredient-input">
         <h2>👋 Welcome to Chef Claude!</h2>
+        <div className="model-toggle">
+          <label htmlFor="model-select">Choose AI model:</label>
+          <select
+            id="model-select"
+            onChange={(e) => setModel(e.target.value)}
+            value={model}
+          >
+            <option value="ollama">Ollama (local)</option>
+            <option value="huggingface">Huggingface (cloud)</option>
+          </select>
+        </div>
+
         <p>
           Just add at least 3 ingredients, and Chef Claude will whip up a
           delicious recipe just for you.

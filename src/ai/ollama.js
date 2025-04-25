@@ -6,8 +6,8 @@ Respond ONLY with the recipe in Markdown. Do NOT repeat this prompt or include a
 Format:
 - A short intro paragraph for the recipe
 - ## Recipe Title (Make it fun and relevant)
-- Ingredients (bulleted list)
-- Instructions (numbered list)
+- ### Ingredients ### (bulleted list)
+- ### Instructions ### (numbered list)
 `;
 
 export async function generateRecipeFromOllama(ingredients) {
